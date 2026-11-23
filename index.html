@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Belajar Sains Interaktif</title>
+  <meta name="description" content="Web pembelajaran sains interaktif dengan materi, video, dan kuis.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <button id="menuBtn" class="icon-btn" aria-label="Buka menu">☰</button>
+    <a href="#" class="brand" id="brandLink">🔬 Belajar Sains</a>
+    <div class="topbar-right">
+      <span id="progressText" class="progress-text">0/7 selesai</span>
+      <button id="themeBtn" class="icon-btn" aria-label="Ganti tema">🌙</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside id="sidebar" class="sidebar">
+      <div class="search-wrap">
+        <input type="search" id="searchInput" placeholder="Cari materi..." aria-label="Cari materi">
+      </div>
+      <div class="progress-card">
+        <div class="progress-label">Progres belajar</div>
+        <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+      </div>
+      <nav id="topicNav" class="topic-nav" aria-label="Daftar materi"></nav>
+      <button id="resetBtn" class="reset-btn">Reset progres</button>
+    </aside>
+
+    <div id="overlay" class="overlay"></div>
+
+    <main id="content" class="content" tabindex="-1"></main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
