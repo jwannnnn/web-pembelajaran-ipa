@@ -3,16 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Belajar Sains Interaktif</title>
-  <meta name="description" content="Web pembelajaran sains interaktif dengan materi, video, dan kuis.">
+  <title>IPA VII - Belajar Sains Interaktif</title>
+  <meta name="description" content="Web pembelajaran sains interaktif IPA VII dengan materi, video, dan kuis.">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+  <!-- Halaman Pembuka (Welcome Screen) -->
+  <div id="welcomeScreen" class="welcome-screen">
+    <div class="welcome-card">
+      <div class="welcome-icon">🔬</div>
+      <span class="welcome-badge">Modul Pembelajaran Interaktif</span>
+      <h1>IPA VII</h1>
+      <p>Pelajari ringkasan materi, tonton video penjelasan, dan uji pemahamanmu lewat kuis interaktif.</p>
+      <form id="welcomeForm" class="welcome-form">
+        <input type="text" id="studentNameInput" placeholder="Tulis nama lengkapmu..." required autocomplete="off">
+        <button type="submit" class="btn welcome-btn">Mulai Belajar →</button>
+      </form>
+    </div>
+  </div>
+
   <header class="topbar">
     <button id="menuBtn" class="icon-btn" aria-label="Buka menu">☰</button>
-    <a href="#" class="brand" id="brandLink">🔬 Belajar Sains</a>
+    <a href="#" class="brand" id="brandLink">🔬 IPA VII</a>
     <div class="topbar-right">
+      <button id="studentBadge" class="student-badge" type="button" title="Klik untuk ganti nama" hidden></button>
       <span id="progressText" class="progress-text">0/7 selesai</span>
       <button id="themeBtn" class="icon-btn" aria-label="Ganti tema">🌙</button>
     </div>

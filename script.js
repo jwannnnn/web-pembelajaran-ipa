@@ -1,5 +1,5 @@
 /* =========================================================
-   Belajar Sains Interaktif
+   Belajar Sains Interaktif - IPA VII
    Data materi, video, dan kuis ada di array TOPICS.
    Untuk menambah materi, cukup tambahkan objek baru.
    ========================================================= */
@@ -424,9 +424,12 @@
   function loadState() {
     try {
       const raw = localStorage.getItem(STORE_KEY);
-      if (raw) return JSON.parse(raw);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        return { done: {}, scores: {}, theme: null, studentName: "", ...parsed };
+      }
     } catch (e) { /* abaikan */ }
-    return { done: {}, scores: {}, theme: null };
+    return { done: {}, scores: {}, theme: null, studentName: "" };
   }
   
   function saveState() {
@@ -439,6 +442,10 @@
   
   /* ---------------- Elemen ---------------- */
   
+  const $welcomeScreen = document.getElementById("welcomeScreen");
+  const $welcomeForm = document.getElementById("welcomeForm");
+  const $studentNameInput = document.getElementById("studentNameInput");
+  const $studentBadge = document.getElementById("studentBadge");
   const $content = document.getElementById("content");
   const $nav = document.getElementById("topicNav");
   const $sidebar = document.getElementById("sidebar");
@@ -459,6 +466,37 @@
   function doneCount() {
     return TOPICS.filter(t => state.done[t.id]).length;
   }
+  
+  /* ---------------- Welcome Screen & Nama Siswa ---------------- */
+  
+  function syncStudentUI() {
+    const name = (state.studentName || "").trim();
+    if (name) {
+      $welcomeScreen.classList.add("hidden");
+      $studentBadge.hidden = false;
+      $studentBadge.textContent = `👤 ${name}`;
+    } else {
+      $welcomeScreen.classList.remove("hidden");
+      $studentBadge.hidden = true;
+      $studentNameInput.value = "";
+    }
+  }
+  
+  $welcomeForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const entered = $studentNameInput.value.trim();
+    if (!entered) return;
+    state.studentName = entered;
+    saveState();
+    syncStudentUI();
+    route();
+  });
+  
+  $studentBadge.addEventListener("click", () => {
+    $studentNameInput.value = state.studentName || "";
+    $welcomeScreen.classList.remove("hidden");
+    setTimeout(() => $studentNameInput.focus(), 50);
+  });
   
   /* ---------------- Tema ---------------- */
   
@@ -527,12 +565,14 @@
   $search.addEventListener("input", () => renderNav($search.value));
   
   document.getElementById("resetBtn").addEventListener("click", () => {
-    if (confirm("Hapus semua progres belajar dan skor kuis?")) {
+    if (confirm("Hapus semua progres belajar, skor kuis, dan nama siswa?")) {
       state.done = {};
       state.scores = {};
+      state.studentName = "";
       saveState();
       updateProgress();
       renderNav($search.value);
+      syncStudentUI();
       route();
     }
   });
@@ -569,13 +609,14 @@
   /* ---------------- Halaman Beranda ---------------- */
   
   function renderHome() {
-    document.title = "Belajar Sains Interaktif";
+    document.title = "IPA VII - Belajar Sains Interaktif";
     const next = TOPICS.find(t => !state.done[t.id]) || TOPICS[0];
+    const greeting = state.studentName ? `Selamat datang, ${esc(state.studentName)}! 👋` : "Selamat datang! 👋";
   
     $content.innerHTML = `
       <section class="hero">
-        <h1>Selamat datang! 👋</h1>
-        <p>Pelajari ${TOPICS.length} materi sains lewat bacaan singkat, video pembelajaran, dan kuis interaktif. Progres belajarmu tersimpan otomatis.</p>
+        <h1>${greeting}</h1>
+        <p>Pelajari ${TOPICS.length} materi IPA VII lewat bacaan singkat, video pembelajaran, dan kuis interaktif. Progres belajarmu tersimpan otomatis.</p>
         <a class="btn" href="#/${next.id}">${doneCount() ? "Lanjut belajar" : "Mulai belajar"}</a>
       </section>
   
@@ -624,7 +665,7 @@
   }
   
   function renderTopic(topic) {
-    document.title = topic.title + " | Belajar Sains";
+    document.title = topic.title + " | IPA VII";
     const idx = TOPICS.indexOf(topic);
     const prev = TOPICS[idx - 1];
     const next = TOPICS[idx + 1];
@@ -769,5 +810,6 @@
   /* ---------------- Mulai ---------------- */
   
   initTheme();
+  syncStudentUI();
   updateProgress();
   route();
