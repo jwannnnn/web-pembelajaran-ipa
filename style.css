@@ -221,7 +221,6 @@
     color: var(--text);
     font-size: 0.95rem;
   }
-
   .search-wrap input:focus { outline: 2px solid var(--primary); }
   
   .progress-card {
